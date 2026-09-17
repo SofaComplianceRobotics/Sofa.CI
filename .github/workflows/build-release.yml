@@ -1,0 +1,45 @@
+name: Build release
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build on ${{matrix.os}}
+    runs-on: ${{matrix.os}}
+    permissions: 
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+
+    steps:
+      # Checks-out the repository under $GITHUB_WORKSPACE, so the job can access it
+      - uses: actions/checkout@v4
+
+      - name: Download SOFA, plugins and Python
+        shell: bash
+        run: ./scripts/setup-download.sh
+
+      # - name: Setup Runner 
+      #   shell: bash
+      #   run: ./scripts/setup-runner.sh
+        
+      # - name: Configure
+      #   shell: bash
+      #   run: |
+      #     mkdir build
+      #     ./scripts/setup-cmake-configure.sh build src plugins
+        
+      # - name: Compile
+      #   shell: bash
+      #   run: ./scripts/setup-ninja-compile.sh build
