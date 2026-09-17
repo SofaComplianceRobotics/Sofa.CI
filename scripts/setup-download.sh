@@ -3,10 +3,13 @@
 # - plugins : plugins source with a CMakeLists file 
 # - python : Python build standalone from Astral (https://github.com/astral-sh/python-build-standalone/)
 
-# clone the sofa repository into src
+# Clone sofa repository into src and use Compliance Robotics postinstall-fixup
 git clone git@github.com:sofa-framework/sofa.git src
+git clone git@github.com:SofaComplianceRobotics/Sofa.CI.Tools.git tools
+rm -r src/tools/postinstall-fixup
+mv tools/postinstall-fixup src/tools/postinstall-fixup
 
-# clone plugins into plugins directory
+# Clone plugins into the plugins directory
 git clone git@github.com:SofaComplianceRobotics/SofaPython3.git plugins/SofaPython3
 git clone git@github.com:sofa-framework/BeamAdapter.git plugins/BeamAdapter
 git clone --single-branch --branch robotics git@github.com:SofaComplianceRobotics/SofaGLFW.git plugins/SofaGLFW
@@ -15,7 +18,8 @@ git clone git@github.com:SofaDefrost/SoftRobots.Inverse.git plugins/SoftRobots.I
 git clone git@github.com:SofaDefrost/Cosserat.git plugins/Cosserat
 git clone git@github.com:SofaDefrost/STLIB.git plugins/STLIB
 
-# if plugins/CMakeLists.txt exists, remove it
+# Create CMakelists for the plugins
+# If plugins/CMakeLists.txt exists, remove it
 if [ -f plugins/CMakeLists.txt ]; then
     rm plugins/CMakeLists.txt
 fi
