@@ -50,5 +50,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: SOFA-Robotics_${{matrix.os}}
-          path: build/SOFA_*.zip
+          path: build/SOFA*.zip
         
