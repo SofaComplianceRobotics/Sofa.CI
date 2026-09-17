@@ -9,6 +9,10 @@ git clone https://github.com/SofaComplianceRobotics/SofaRobotics.CI.Tools.git to
 rm -r src/tools/postinstall-fixup
 mv tools/postinstall-fixup src/tools/postinstall-fixup
 
+# Rename project to SOFA-Robotics
+sed -i 's/CPACK_PACKAGE_NAME "SOFA/CPACK_PACKAGE_NAME "SOFA-Robotics/g' src/CMakeLists.txt
+sed -i 's/CPACK_PACKAGE_FILE_NAME "SOFA/CPACK_PACKAGE_FILE_NAME "SOFA-Robotics/g' src/CMakeLists.txt
+
 # Clone plugins into the plugins directory
 git clone --single-branch --branch pr_bundlepython https://github.com/SofaComplianceRobotics/SofaPython3.git plugins/SofaPython3
 git clone https://github.com/sofa-framework/BeamAdapter.git plugins/BeamAdapter
