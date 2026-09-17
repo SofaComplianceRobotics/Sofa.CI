@@ -4,19 +4,19 @@
 # - python : Python build standalone from Astral (https://github.com/astral-sh/python-build-standalone/)
 
 # Clone sofa repository into src and use Compliance Robotics postinstall-fixup
-git clone https://github.com:sofa-framework/sofa.git src
-git clone https://github.com:SofaComplianceRobotics/Sofa.CI.Tools.git tools
+git clone https://github.com/sofa-framework/sofa.git src
+git clone https://github.com/SofaComplianceRobotics/Sofa.CI.Tools.git tools
 rm -r src/tools/postinstall-fixup
 mv tools/postinstall-fixup src/tools/postinstall-fixup
 
 # Clone plugins into the plugins directory
-git clone https://github.com:SofaComplianceRobotics/SofaPython3.git plugins/SofaPython3
-git clone https://github.com:sofa-framework/BeamAdapter.git plugins/BeamAdapter
-git clone --single-branch --branch robotics https://github.com:SofaComplianceRobotics/SofaGLFW.git plugins/SofaGLFW
-git clone https://github.com:SofaDefrost/SoftRobots.git plugins/SoftRobots
-git clone https://github.com:SofaDefrost/SoftRobots.Inverse.git plugins/SoftRobots.Inverse
-git clone https://github.com:SofaDefrost/Cosserat.git plugins/Cosserat
-git clone https://github.com:SofaDefrost/STLIB.git plugins/STLIB
+git clone --single-branch --branch pr_bundlepython https://github.com/SofaComplianceRobotics/SofaPython3.git plugins/SofaPython3
+git clone https://github.com/sofa-framework/BeamAdapter.git plugins/BeamAdapter
+git clone --single-branch --branch robotics https://github.com/SofaComplianceRobotics/SofaGLFW.git plugins/SofaGLFW
+git clone https://github.com/SofaDefrost/SoftRobots.git plugins/SoftRobots
+git clone https://github.com/SofaDefrost/SoftRobots.Inverse.git plugins/SoftRobots.Inverse
+git clone https://github.com/SofaDefrost/Cosserat.git plugins/Cosserat
+git clone https://github.com/SofaDefrost/STLIB.git plugins/STLIB
 
 # Create CMakelists for the plugins
 # If plugins/CMakeLists.txt exists, remove it
@@ -43,6 +43,9 @@ tar -xf cpython.tar.gz
 
 # For MacOS
 
-echo "Working Directory:"
+echo "################################################"
+echo "# Working Directory:"
 ls 
+echo "# Plugins Directory:"
 ls plugins
+echo "################################################"
