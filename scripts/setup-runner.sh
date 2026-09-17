@@ -9,7 +9,6 @@ sudo apt -y install ccache
 sudo apt -y install libtinyxml2-dev
 sudo apt -y install libopengl0
 sudo apt -y install libboost-all-dev
-python -m pip install numpy scipy pybind11==2.12.0
 sudo apt -y install libpng-dev libjpeg-dev libtiff-dev libglew-dev zlib1g-dev
 sudo apt -y install libeigen3-dev
 
