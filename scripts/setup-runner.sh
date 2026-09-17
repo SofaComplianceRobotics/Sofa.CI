@@ -13,3 +13,6 @@ sudo apt -y install libpng-dev libjpeg-dev libtiff-dev libglew-dev zlib1g-dev
 sudo apt -y install libeigen3-dev
 
 sudo apt -y install xorg-dev libgtk-3-dev
+
+# Python dependencies
+./build/bin/python/bin/python3 -m pip install numpy scipy pybind11==2.12.0
