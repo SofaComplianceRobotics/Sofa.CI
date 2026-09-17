@@ -1,0 +1,69 @@
+#!/bin/bash
+set -o errexit # Exit on error
+usage() {
+    echo "Usage: setup-cmake-configure.sh <build-dir> <src-dir> <plugins-dir>"
+}
+
+if [ "$#" -ge 3 ]; then
+    BUILD_DIR="$(cd "$1" && pwd)"
+    SRC_DIR="$(cd "$2" && pwd)"
+    PLUGINS_DIR="$(cd "$3" && pwd)"
+    PYTHON_DIR="bin/python"
+else
+    usage; exit 1
+fi
+
+echo "--------------- setup-cmake-configure.sh vars ---------------"
+echo "BUILD_DIR = $BUILD_DIR"
+echo "SRC_DIR = $SRC_DIR"
+echo "PLUGINS_DIR = $PLUGINS_DIR"
+echo "-------------------------------------------------"
+
+#############
+# Options   #
+#############
+
+# Add Cmake option function
+cmake_options="$CI_DEPENDS_ON_FLAGS"
+add-cmake-option() {
+    cmake_options="$cmake_options $*"
+}
+
+# Build type and compiler
+add-cmake-option "-DCMAKE_BUILD_TYPE=Release"
+add-cmake-option "-DCMAKE_C_COMPILER=gcc"
+add-cmake-option "-DCMAKE_CXX_COMPILER=g++"
+
+# Python
+add-cmake-option "-DPython_ROOT_DIR=$BUILD_DIR/$PYTHON_DIR"
+add-cmake-option "-DPython_EXECUTABLE=$BUILD_DIR/$PYTHON_DIR/bin/python3"
+add-cmake-option "-DSOFAPYTHON3_LOAD_BUNDLED_PYTHON=ON"
+add-cmake-option "-DSOFAPYTHON3_BUNDLED_PYTHON_PATH=$PYTHON_DIR"
+
+# Plugins
+add-cmake-option "-DSOFA_EXTERNAL_DIRECTORIES=$PLUGINS_DIR"
+add-cmake-option "-DPLUGIN_ARTICULATEDSYSTEMPLUGIN=ON"
+add-cmake-option "-DSOFA_WITH_OPENGL=ON"
+
+# Binaries 
+add-cmake-option "-DSOFA_WITH_DEVTOOLS=OFF"
+add-cmake-option "-DSOFA_DUMP_VISITOR_INFO=OFF"
+add-cmake-option "-DSOFA_BUILD_RELEASE_PACKAGE=ON"
+add-cmake-option \
+    "-DCPACK_BINARY_IFW=OFF" "-DCPACK_BINARY_NSIS=OFF" "-DCPACK_BINARY_ZIP=OFF" \
+    "-DCPACK_BINARY_BUNDLE=OFF" "-DCPACK_BINARY_DEB=OFF" "-DCPACK_BINARY_DRAGNDROP=OFF" \
+    "-DCPACK_BINARY_FREEBSD=OFF" "-DCPACK_BINARY_OSXX11=OFF" "-DCPACK_BINARY_PACKAGEMAKER=OFF" \
+    "-DCPACK_BINARY_PRODUCTBUILD=OFF" "-DCPACK_BINARY_RPM=OFF" "-DCPACK_BINARY_STGZ=OFF" \
+    "-DCPACK_BINARY_TBZ2=OFF" "-DCPACK_BINARY_TGZ=OFF" "-DCPACK_BINARY_TXZ=OFF" \
+    "-DCPACK_SOURCE_RPM=OFF" "-DCPACK_SOURCE_TBZ2=OFF" "-DCPACK_SOURCE_TGZ=OFF" \
+    "-DCPACK_SOURCE_TXZ=OFF" "-DCPACK_SOURCE_TZ=OFF"
+add-cmake-option "-DCPACK_GENERATOR=ZIP"
+add-cmake-option "-DCPACK_BINARY_ZIP=ON"
+
+add-cmake-option "--preset=minimal"
+
+#############
+# Configure #
+#############
+
+cmake -GNinja $cmake_options -B "$BUILD_DIR" -S "$SRC_DIR" | tee -a "cmake-output.txt"
