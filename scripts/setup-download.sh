@@ -5,7 +5,7 @@
 
 # Clone sofa repository into src and use Compliance Robotics postinstall-fixup
 git clone https://github.com/sofa-framework/sofa.git src
-git clone https://github.com/SofaComplianceRobotics/Sofa.CI.Tools.git tools
+git clone https://github.com/SofaComplianceRobotics/SofaRobotics.CI.Tools.git tools
 rm -r src/tools/postinstall-fixup
 mv tools/postinstall-fixup src/tools/postinstall-fixup
 
