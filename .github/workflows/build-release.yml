@@ -26,6 +26,10 @@ jobs:
       # Checks-out the repository under $GITHUB_WORKSPACE, so the job can access it
       - uses: actions/checkout@v4
 
+      - name: Make the script files executable
+        shell: bash
+        run: chmod +x scripts/setup-download.sh scripts/setup-runner.sh scripts/setup-cmake-configure.sh scripts/setup-ninja-compile.sh
+
       - name: Download SOFA, plugins and Python
         shell: bash
         run: ./scripts/setup-download.sh
