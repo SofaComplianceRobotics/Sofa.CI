@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-22.04]
 
     steps:
       # Checks-out the repository under $GITHUB_WORKSPACE, so the job can access it
@@ -30,15 +30,15 @@ jobs:
         shell: bash
         run: ./scripts/setup-download.sh
 
-      # - name: Setup Runner 
-      #   shell: bash
-      #   run: ./scripts/setup-runner.sh
+      - name: Setup Runner 
+        shell: bash
+        run: ./scripts/setup-runner.sh
         
-      # - name: Configure
-      #   shell: bash
-      #   run: |
-      #     mkdir build
-      #     ./scripts/setup-cmake-configure.sh build src plugins
+      - name: Configure
+        shell: bash
+        run: |
+          mkdir build
+          ./scripts/setup-cmake-configure.sh build src plugins
         
       # - name: Compile
       #   shell: bash
