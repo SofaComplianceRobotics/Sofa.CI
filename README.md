@@ -1,4 +1,4 @@
-# Sofa.CI
+# SofaRobotics.CI
 
 Scripts and GitHub actions to package SOFA for Compliance Robotics.
 
