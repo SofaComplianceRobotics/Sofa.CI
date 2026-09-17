@@ -1,7 +1,7 @@
 # Directory structure:
 # - src : SOFA source
 # - plugins : plugins source with a CMakeLists file 
-# - python : Python build standalone from Astral (https://github.com/astral-sh/python-build-standalone/)
+# - build/bin/python : Python build standalone from Astral (https://github.com/astral-sh/python-build-standalone/)
 
 # Clone sofa repository into src and use Compliance Robotics postinstall-fixup
 git clone https://github.com/sofa-framework/sofa.git src
@@ -38,6 +38,7 @@ sofa_add_subdirectory(plugin SofaGLFW SofaGLFW ON)" >> plugins/CMakeLists.txt
 # For Linux
 curl -L -o cpython.tar.gz https://github.com/astral-sh/python-build-standalone/releases/download/20260901/cpython-3.14.7+20260901-x86_64-unknown-linux-gnu-install_only.tar.gz
 tar -xf cpython.tar.gz
+mkdir build
 mkdir build/bin
 mv python build/bin/python
 
