@@ -26,11 +26,11 @@ jobs:
       # Checks-out the repository under $GITHUB_WORKSPACE, so the job can access it
       - uses: actions/checkout@v4
 
-      - name: Make the script files executable
+      - name: Make Script Files Executable
         shell: bash
         run: chmod +x scripts/setup-download.sh scripts/setup-runner.sh scripts/setup-cmake-configure.sh scripts/setup-ninja-compile.sh
 
-      - name: Download SOFA, plugins and Python
+      - name: Download SOFA, Plugins and Python
         shell: bash
         run: ./scripts/setup-download.sh
 
@@ -42,6 +42,12 @@ jobs:
         shell: bash
         run: ./scripts/setup-cmake-configure.sh build src plugins
         
-      # - name: Compile
-      #   shell: bash
-      #   run: ./scripts/setup-ninja-compile.sh build
+      - name: Compile
+        shell: bash
+        run: ./scripts/setup-ninja-compile.sh build
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          path: build/SOFA-Robotics*.zip
+        
