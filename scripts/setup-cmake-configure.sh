@@ -29,6 +29,8 @@ add-cmake-option() {
     cmake_options="$cmake_options $*"
 }
 
+add-cmake-option "-DCMAKE_PROJECT_NAME=SOFA-Robotics"
+
 # Build type and compiler
 add-cmake-option "-DCMAKE_BUILD_TYPE=Release"
 add-cmake-option "-DCMAKE_C_COMPILER=gcc"
