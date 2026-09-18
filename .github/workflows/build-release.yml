@@ -26,6 +26,12 @@ jobs:
       # Checks-out the repository under $GITHUB_WORKSPACE, so the job can access it
       - uses: actions/checkout@v4
 
+      - name: Initialize MSVC environment
+        uses: ilammy/msvc-dev-cmd@v1
+        if: matrix.os == 'windows-2025'
+        with:
+          arch: x64
+
       - name: Make Script Files Executable
         shell: bash
         run: chmod +x scripts/setup-download.sh scripts/setup-runner.sh scripts/setup-cmake-configure.sh scripts/setup-ninja-compile.sh

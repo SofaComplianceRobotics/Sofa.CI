@@ -15,6 +15,8 @@ else
     usage; exit 1
 fi
 
+os="$(uname -s)"
+
 echo "--------------- setup-cmake-configure.sh vars ---------------"
 echo "BUILD_DIR = $BUILD_DIR"
 echo "SRC_DIR = $SRC_DIR"
@@ -33,8 +35,14 @@ add-cmake-option() {
 
 # Build type and compiler
 add-cmake-option "-DCMAKE_BUILD_TYPE=Release"
-add-cmake-option "-DCMAKE_C_COMPILER=gcc"
-add-cmake-option "-DCMAKE_CXX_COMPILER=g++"
+
+if [[ "$os" == MINGW* || "$os" == MSYS* || "$os" == CYGWIN* || "$os" == Windows_NT ]]; then
+    add-cmake-option "-DCMAKE_C_COMPILER=cl"
+    add-cmake-option "-DCMAKE_CXX_COMPILER=cl"
+else
+    add-cmake-option "-DCMAKE_C_COMPILER=gcc"
+    add-cmake-option "-DCMAKE_CXX_COMPILER=g++"
+fi
 
 # Python
 add-cmake-option "-DPython_ROOT_DIR=$BUILD_DIR/$PYTHON_DIR"
@@ -49,7 +57,6 @@ add-cmake-option "-DPLUGIN_ARTICULATEDSYSTEMPLUGIN=ON"
 add-cmake-option "-DSOFA_WITH_OPENGL=ON"
 
 # Dependencies
-os="$(uname -s)"
 if [[ "$os" == MINGW* || "$os" == MSYS* || "$os" == CYGWIN* || "$os" == Windows_NT ]]; then
     add-cmake-option "-DEIGEN3_ROOT=$EIGEN3_ROOT"
     add-cmake-option "-DBOOST_ROOT=$BOOST_ROOT"
