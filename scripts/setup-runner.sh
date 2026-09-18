@@ -1,18 +1,63 @@
+#!/bin/bash
+
+set -euo pipefail # Exit on error, unset variable, or pipe failure
+
+install_linux_dependencies() {
+    sudo apt-get update 
+
+    # Install build tools
+    sudo apt -y install build-essential software-properties-common clang-14 cmake cmake-gui ninja-build ccache
+
+    # Install dependencies
+    sudo apt -y install libtinyxml2-dev libopengl0 libboost-all-dev libpng-dev libjpeg-dev libtiff-dev libglew-dev zlib1g-dev xorg-dev libgtk-3-dev libeigen3-dev
+}
+
+install_windows_dependencies() {
+    BOOST_PATH=$(ls -d /c/local/boost_* 2>/dev/null | head -n 1 || true)
+    if [ -z "$BOOST_PATH" ]; then
+        echo "Boost path not found" >&2
+        exit 1
+    fi
+
+    EIGEN_INCLUDE=$(find $ChocolateyInstall/lib/eigen -type d -path "*/include/eigen3" | head -n 1 || true)
+    if [ -z "$EIGEN_INCLUDE" ]; then
+        EIGEN_INCLUDE=$(find $ChocolateyInstall/lib/eigen -type d -name "Eigen" | head -n 1 | sed 's|/Eigen$||' || true)
+    fi
+
+    if [ -z "$EIGEN_INCLUDE" ]; then
+        echo "Eigen include path not found" >&2
+        exit 1
+    fi
+
+    echo "BOOST_ROOT=$(cygpath -w "$BOOST_PATH")" >> "$GITHUB_ENV"
+    echo "EIGEN3_ROOT=$(cygpath -w "$EIGEN_INCLUDE")" >> "$GITHUB_ENV"
+}
+
 # Install build tools
-sudo apt -y install build-essential software-properties-common
-sudo apt -y install clang-14
-sudo apt -y install cmake cmake-gui
-sudo apt -y install ninja-build
-sudo apt -y install ccache
+os="$(uname -s)"
+python_deps="numpy scipy pybind11==2.12.0"
+python_exe=""
 
-# Install dependencies
-sudo apt -y install libtinyxml2-dev
-sudo apt -y install libopengl0
-sudo apt -y install libboost-all-dev
-sudo apt -y install libpng-dev libjpeg-dev libtiff-dev libglew-dev zlib1g-dev
-sudo apt -y install libeigen3-dev
-
-sudo apt -y install xorg-dev libgtk-3-dev
+case "$os" in
+    Linux)
+        if [ -f /etc/debian_version ]; then
+            install_linux_dependencies
+            python_exe = "./build/bin/python/bin/python3"
+        else
+            echo "Unsupported Linux distribution" >&2
+            exit 1
+        fi
+        ;;
+    MINGW*|MSYS*|CYGWIN*|Windows_NT)
+        install_windows_dependencies
+        python_exe="./build/bin/python/python.exe"
+        ;;
+    *)
+        echo "Unsupported OS: $os" >&2
+        exit 1
+        ;;
+    esac
 
 # Python dependencies
-./build/bin/python/bin/python3 -m pip install numpy scipy pybind11==2.12.0
+${python_exe} -m pip install --upgrade pip
+${python_exe} -m pip install ${python_deps}

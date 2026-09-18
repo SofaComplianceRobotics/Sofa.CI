@@ -1,5 +1,7 @@
 #!/bin/bash
-set -o errexit # Exit on error
+
+set -euo pipefail # Exit on error, unset variable, or pipe failure
+
 usage() {
     echo "Usage: setup-ninja-compile.sh <build-dir>"
 }

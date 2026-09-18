@@ -1,3 +1,7 @@
+#!/bin/bash
+
+set -euo pipefail # Exit on error, unset variable, or pipe failure
+
 # Directory structure:
 # - src : SOFA source
 # - plugins : plugins source with a CMakeLists file 
@@ -27,7 +31,6 @@ git clone https://github.com/SofaDefrost/STLIB.git plugins/STLIB
 if [ -f plugins/CMakeLists.txt ]; then
     rm plugins/CMakeLists.txt
 fi
-
 touch plugins/CMakeLists.txt
 echo "cmake_minimum_required(VERSION 3.12)
 sofa_add_subdirectory(plugin SofaPython3 SofaPython3 ON)
@@ -39,16 +42,29 @@ sofa_add_subdirectory(plugin SoftRobots.Inverse SoftRobots.Inverse ON)
 sofa_add_subdirectory(plugin SofaGLFW SofaGLFW ON)" >> plugins/CMakeLists.txt
 
 # Download Python
-# For Linux
-curl -L -o cpython.tar.gz https://github.com/astral-sh/python-build-standalone/releases/download/20260901/cpython-3.14.7+20260901-x86_64-unknown-linux-gnu-install_only.tar.gz
+download_url=""
+
+os="$(uname -s)"
+case "$os" in
+    Linux)
+        download_url="https://github.com/astral-sh/python-build-standalone/releases/download/20260901/cpython-3.14.7+20260901-x86_64-unknown-linux-gnu-install_only.tar.gz"
+        ;;
+
+    MINGW*|MSYS*|CYGWIN*|Windows_NT)
+        download_url="https://github.com/astral-sh/python-build-standalone/releases/download/20260901/cpython-3.14.7+20260901-x86_64-pc-windows-msvc-install_only.tar.gz"
+        ;;
+    # For MacOS - TODO
+    *)
+        echo "Unsupported OS: $os" >&2
+        exit 1
+        ;;
+esac
+
+curl -L -o cpython.tar.gz  "$download_url"
 tar -xf cpython.tar.gz
 mkdir build
 mkdir build/bin
 mv python build/bin/python
-
-# For Windows
-
-# For MacOS
 
 echo "################################################"
 echo "### Working Directory:"

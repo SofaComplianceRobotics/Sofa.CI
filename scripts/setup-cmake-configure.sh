@@ -1,5 +1,7 @@
 #!/bin/bash
-set -o errexit # Exit on error
+
+set -euo pipefail # Exit on error, unset variable, or pipe failure
+
 usage() {
     echo "Usage: setup-cmake-configure.sh <build-dir> <src-dir> <plugins-dir>"
 }
@@ -45,6 +47,13 @@ add-cmake-option "-Dpybind11_DIR=$BUILD_DIR/$PYTHON_DIR/lib/python3.14/site-pack
 add-cmake-option "-DSOFA_EXTERNAL_DIRECTORIES=$PLUGINS_DIR"
 add-cmake-option "-DPLUGIN_ARTICULATEDSYSTEMPLUGIN=ON"
 add-cmake-option "-DSOFA_WITH_OPENGL=ON"
+
+# Dependencies
+os="$(uname -s)"
+if [[ "$os" == MINGW* || "$os" == MSYS* || "$os" == CYGWIN* || "$os" == Windows_NT ]]; then
+    add cmake-option "-DEIGEN3_ROOT=$EIGEN3_ROOT"
+    add cmake-option "-DBOOST_ROOT=$BOOST_ROOT"
+fi
 
 # Binaries 
 add-cmake-option "-DSOFA_WITH_DEVTOOLS=OFF"
