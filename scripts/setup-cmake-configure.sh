@@ -26,7 +26,7 @@ echo "-------------------------------------------------"
 #############
 
 # Add Cmake option function
-cmake_options="$CI_DEPENDS_ON_FLAGS"
+cmake_options=""
 add-cmake-option() {
     cmake_options="$cmake_options $*"
 }
