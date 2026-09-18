@@ -51,8 +51,8 @@ add-cmake-option "-DSOFA_WITH_OPENGL=ON"
 # Dependencies
 os="$(uname -s)"
 if [[ "$os" == MINGW* || "$os" == MSYS* || "$os" == CYGWIN* || "$os" == Windows_NT ]]; then
-    add cmake-option "-DEIGEN3_ROOT=$EIGEN3_ROOT"
-    add cmake-option "-DBOOST_ROOT=$BOOST_ROOT"
+    add-cmake-option "-DEIGEN3_ROOT=$EIGEN3_ROOT"
+    add-cmake-option "-DBOOST_ROOT=$BOOST_ROOT"
 fi
 
 # Binaries 
