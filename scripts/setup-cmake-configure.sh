@@ -53,7 +53,11 @@ fi
 add-cmake-option "-DPython_ROOT_DIR=$BUILD_DIR/$PYTHON_DIR"
 add-cmake-option "-DSOFAPYTHON3_LOAD_BUNDLED_PYTHON=ON"
 add-cmake-option "-DSOFAPYTHON3_BUNDLED_PYTHON_PATH=$PYTHON_DIR"
-add-cmake-option "-Dpybind11_DIR=$BUILD_DIR/$PYTHON_DIR/lib/python3.14/site-packages/pybind11/share/cmake/pybind11"
+if [[ "$os" == MINGW* || "$os" == MSYS* || "$os" == CYGWIN* || "$os" == Windows_NT ]]; then
+    add-cmake-option "-Dpybind11_DIR=$BUILD_DIR/$PYTHON_DIR/Lib/site-packages/pybind11/share/cmake/pybind11"
+else
+    add-cmake-option "-Dpybind11_DIR=$BUILD_DIR/$PYTHON_DIR/lib/python3.14/site-packages/pybind11/share/cmake/pybind11"
+fi
 
 # Plugins
 add-cmake-option "-DSOFA_EXTERNAL_DIRECTORIES=$PLUGINS_DIR"
