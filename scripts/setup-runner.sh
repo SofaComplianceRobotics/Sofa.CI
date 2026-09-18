@@ -13,6 +13,10 @@ install_linux_dependencies() {
 }
 
 install_windows_dependencies() {
+    # Install dependencies using Chocolatey
+    choco install boost-msvc-14.3 eigen ninja --no-progress --yes
+
+    # Set environment variables for Boost and Eigen
     BOOST_PATH=$(ls -d /c/local/boost_* 2>/dev/null | head -n 1 || true)
     if [ -z "$BOOST_PATH" ]; then
         echo "Boost path not found" >&2
@@ -42,7 +46,7 @@ case "$os" in
     Linux)
         if [ -f /etc/debian_version ]; then
             install_linux_dependencies
-            python_exe = "./build/bin/python/bin/python3"
+            python_exe="./build/bin/python/bin/python3"
         else
             echo "Unsupported Linux distribution" >&2
             exit 1
