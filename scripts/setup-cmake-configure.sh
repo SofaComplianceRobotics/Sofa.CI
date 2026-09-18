@@ -45,8 +45,12 @@ else
 fi
 
 # Python
+if [[ "$os" == MINGW* || "$os" == MSYS* || "$os" == CYGWIN* || "$os" == Windows_NT ]]; then
+    add-cmake-option "-DPython_EXECUTABLE=$BUILD_DIR/$PYTHON_DIR/python.exe"
+else
+    add-cmake-option "-DPython_EXECUTABLE=$BUILD_DIR/$PYTHON_DIR/bin/python3"
+fi
 add-cmake-option "-DPython_ROOT_DIR=$BUILD_DIR/$PYTHON_DIR"
-add-cmake-option "-DPython_EXECUTABLE=$BUILD_DIR/$PYTHON_DIR/bin/python3"
 add-cmake-option "-DSOFAPYTHON3_LOAD_BUNDLED_PYTHON=ON"
 add-cmake-option "-DSOFAPYTHON3_BUNDLED_PYTHON_PATH=$PYTHON_DIR"
 add-cmake-option "-Dpybind11_DIR=$BUILD_DIR/$PYTHON_DIR/lib/python3.14/site-packages/pybind11/share/cmake/pybind11"
